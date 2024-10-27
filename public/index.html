@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de Fetch con Endpoints</title>
+</head>
+<body>
+    <h1>Resultados de los Endpoints</h1>
+
+    <p id="texto">Cargando el texto...</p>
+    <p id="json">Cargando el JSON...</p>
+    <p id="html">Cargando el HTML...</p>
+    <p id="redireccion">Cargando la redirección...</p>
+    <p id="error">Esperando error...</p>
+    <p id="cookie">Esperando cookie...</p>
+    <p id="cabeceras">Cargando cabeceras...</p>
+    <p id="descargar">Esperando archivo...</p>
+    <p id="stream">Cargando datos en streaming...</p>
+    <p id="login">Esperando autenticación...</p>
+    <p id="metodo">Cargando respuesta según el método...</p>
+    <p id="async">Esperando respuesta asíncrona...</p>
+
+    <script>
+        // Llamada al endpoint /texto
+        fetch('/texto')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('texto').textContent = data;
+            })
+            .catch(error => console.error('Error en /texto:', error));
+
+        // Llamada al endpoint /json
+        fetch('/json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('json').textContent = `Mensaje: ${data.mensaje}`;
+            })
+            .catch(error => console.error('Error en /json:', error));
+
+        // Llamada al endpoint /html
+        fetch('/html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('html').innerHTML = data;
+            })
+            .catch(error => console.error('Error en /html:', error));
+
+        // Llamada al endpoint /redirigir
+        fetch('/redirigir', { redirect: 'manual' })
+            .then(response => {
+                if (response.status === 302) {
+                    document.getElementById('redireccion').textContent = 'Redirigido con éxito!';
+                } else {
+                    return response.text().then(data => {
+                        document.getElementById('redireccion').textContent = data;
+                    });
+                }
+            })
+            .catch(error => console.error('Error en /redirigir:', error));
+
+        // Llamada al endpoint /error
+        fetch('/error')
+            .then(response => {
+                if (!response.ok) {
+                    document.getElementById('error').textContent = `Error ${response.status}: ${response.statusText}`;
+                } else {
+                    return response.text().then(data => {
+                        document.getElementById('error').textContent = data;
+                    });
+                }
+            })
+            .catch(error => console.error('Error en /error:', error));
+
+        // Llamada al endpoint /cookie
+        fetch('/cookie')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('cookie').textContent = data;
+            })
+            .catch(error => console.error('Error en /cookie:', error));
+
+        // Llamada al endpoint /cabeceras
+        fetch('/cabeceras')
+            .then(response => {
+                document.getElementById('cabeceras').textContent = response.headers.get('X-Custom-Header');
+            })
+            .catch(error => console.error('Error en /cabeceras:', error));
+
+        // Llamada al endpoint /descargar
+        document.getElementById('descargar').innerHTML = '<a href="/descargar">Descargar archivo</a>';
+
+        // Llamada al endpoint /stream
+        fetch('/stream')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('stream').textContent = data;
+            })
+            .catch(error => console.error('Error en /stream:', error));
+
+        // Llamada al endpoint /login
+        fetch('/login')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('login').textContent = data;
+            })
+            .catch(error => console.error('Error en /login:', error));
+
+        // Llamada al endpoint /metodo
+        fetch('/metodo')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('metodo').textContent = data;
+            })
+            .catch(error => console.error('Error en /metodo:', error));
+
+        // Llamada al endpoint /async
+        fetch('/async')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('async').textContent = data;
+            })
+            .catch(error => console.error('Error en /async:', error));
+    </script>
+</body>
+</html>
